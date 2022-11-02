@@ -1164,6 +1164,8 @@ resources to use `photos_path` and `accounts_path`.
 
 NOTE: The `namespace` scope will automatically add `:as` as well as `:module` and `:path` prefixes.
 
+#### Named Parameter Scopes
+
 You can prefix routes with a named parameter also:
 
 ```ruby
@@ -1173,6 +1175,26 @@ end
 ```
 
 This will provide you with URLs such as `/bob/articles/1` and will allow you to reference the `username` part of the path as `params[:username]` in controllers, helpers, and views.
+
+Be aware however, that without the use of `:as` argument, this approach will result in an error when using `url_for` helper directly or methods like `form_with` that use `url_for` internally. For example, Rails won't be able to build a route from `url_for(['bob', @article])`.
+
+Let's look at a more practical example, that works with `url_for` and other helpers that depend on it:
+
+```ruby
+scope ':account_id', as: 'account', constraints: { account_id: /\d+/ } do
+  resources :articles
+end
+```
+
+This will generate path and URL helpers prefixed with `account_`, into which you can pass your objects as expected:
+
+```ruby
+account_article_path(@account, @article) # => /1/article/1
+url_for([@account, @article]) # => /1/article/1
+form_with(model: [@account, @article]) # <form action="/1/article/1" ...>
+```
+
+Finally, in this example we're using a constrain too, to limit the scope, to just paths beginning with digits, like database IDs.
 
 ### Restricting the Routes Created
 
