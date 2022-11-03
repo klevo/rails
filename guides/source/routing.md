@@ -1194,7 +1194,7 @@ url_for([@account, @article]) # => /1/article/1
 form_with(model: [@account, @article]) # <form action="/1/article/1" ...>
 ```
 
-Finally, in this example we're using a constrain too, to limit the scope, to just paths beginning with digits, like database IDs.
+We also [use a constraint](#segment-constraints) to limit the scope to only match ID-like strings.
 
 ### Restricting the Routes Created
 
