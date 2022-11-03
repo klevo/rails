@@ -1166,19 +1166,7 @@ NOTE: The `namespace` scope will automatically add `:as` as well as `:module` an
 
 #### Parametric Scopes
 
-You can prefix routes with a named parameter also:
-
-```ruby
-scope ':username' do
-  resources :articles
-end
-```
-
-This will provide you with URLs such as `/bob/articles/1` and will allow you to reference the `username` part of the path as `params[:username]` in controllers, helpers, and views.
-
-Be aware however, that without the use of `:as` argument, this approach will result in an error when using `url_for` helper directly or methods like `form_with` that use `url_for` internally. For example, Rails won't be able to build a route from `url_for(['bob', @article])`.
-
-Let's look at a more practical example, that works with `url_for` and other helpers that depend on it:
+You can prefix routes with a named parameter:
 
 ```ruby
 scope ':account_id', as: 'account', constraints: { account_id: /\d+/ } do
@@ -1186,15 +1174,19 @@ scope ':account_id', as: 'account', constraints: { account_id: /\d+/ } do
 end
 ```
 
-This will generate path and URL helpers prefixed with `account_`, into which you can pass your objects as expected:
+This will provide you with paths such as `/1/articles/9` and will allow you to reference the `account_id` part of the path as `params[:account_id]` in controllers, helpers, and views.
+
+It will also generate path and URL helpers prefixed with `account_`, into which you can pass your objects as expected:
 
 ```ruby
 account_article_path(@account, @article) # => /1/article/9
 url_for([@account, @article]) # => /1/article/9
-form_with(model: [@account, @article]) # <form action="/1/article/9" ...>
+form_with(model: [@account, @article]) # => <form action="/1/article/9" ...>
 ```
 
-We also [use a constraint](#segment-constraints) to limit the scope to only match ID-like strings.
+We [use a constraint](#segment-constraints) to limit the scope to only match ID-like strings.
+
+NOTE: The `:as` and `:constraints` parameters are optional, however without the use of `:as` such approach will result in an error when combined with `url_for` helper directly or methods like `form_with` that use `url_for` internally. For example, Rails won't be able to build a route from `url_for([@account, @article])` unless you specified `:as`.
 
 ### Restricting the Routes Created
 
