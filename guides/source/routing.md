@@ -1164,7 +1164,7 @@ resources to use `photos_path` and `accounts_path`.
 
 NOTE: The `namespace` scope will automatically add `:as` as well as `:module` and `:path` prefixes.
 
-#### Named Parameter Scopes
+#### Parametric Scopes
 
 You can prefix routes with a named parameter also:
 
