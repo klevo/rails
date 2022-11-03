@@ -1189,9 +1189,9 @@ end
 This will generate path and URL helpers prefixed with `account_`, into which you can pass your objects as expected:
 
 ```ruby
-account_article_path(@account, @article) # => /1/article/1
-url_for([@account, @article]) # => /1/article/1
-form_with(model: [@account, @article]) # <form action="/1/article/1" ...>
+account_article_path(@account, @article) # => /1/article/9
+url_for([@account, @article]) # => /1/article/9
+form_with(model: [@account, @article]) # <form action="/1/article/9" ...>
 ```
 
 We also [use a constraint](#segment-constraints) to limit the scope to only match ID-like strings.
